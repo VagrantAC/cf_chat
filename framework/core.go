@@ -73,12 +73,12 @@ func (c *Core) ServeHTTP(response http.ResponseWriter, request *http.Request) {
   
   handlers := c.FindRouteByRequest(request)
   if handlers == nil {
-  	ctx.Json(404, "not found")
+  	ctx.SetStatus(404).Json("not found")
   	return
   }
 	ctx.SetHandlers(handlers)
   if err := ctx.Next(); err != nil {
-  	ctx.Json(500, "inner error")
+  	ctx.SetStatus(500).Json("inner error")
   	return
   }
 }

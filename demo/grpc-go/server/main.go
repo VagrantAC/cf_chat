@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	pb "demo/proto"
+	"demo/server/middleware/auth"
 	"flag"
 	"fmt"
 	"log"
 	"net"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc"
 )
 var (
@@ -32,7 +35,14 @@ func main() {
   if err != nil {
     log.Fatalf("failed to listen: %v", err)
   }
-  s := grpc.NewServer()
+  s := grpc.NewServer(
+  	grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
+  		grpc_auth.StreamServerInterceptor(auth.AuthInterceptor),
+  	)),
+  	grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+  		grpc_auth.UnaryServerInterceptor(auth.AuthInterceptor),
+  	)),
+  )
   pb.RegisterEchoServiceServer(s, &server{})
   log.Printf("server listening at %v", lis.Addr())
   if err := s.Serve(lis); err != nil {

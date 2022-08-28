@@ -1,2 +1,3 @@
 frontend/node_modules/*
 demo/grpc-web/node_modules/*
+demo/grpc-web/src/dist

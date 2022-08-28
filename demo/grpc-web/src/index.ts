@@ -7,11 +7,11 @@ request.setMessage("Hello World!");
 
 const call = echoService.echo(
   request,
-  { "custom-header-1": "value1" },
+  { "custom-header-1": "value1", "bearer": "demo" },
   (err, response) => {
     console.log(response.getMessage());
   }
 );
-call.on("status", (status) => {
+call.on("status", (status: any) => {
   console.log("log status:", status);
 });

@@ -3,13 +3,11 @@ package auth
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/peer"
 )
 
 type TokenInfo struct {
@@ -18,11 +16,9 @@ type TokenInfo struct {
 }
 
 func AuthInterceptor(ctx context.Context) (context.Context, error) {
-	fmt.Println("test middle auth AuthInterceptor")
+	log.Println("test middle auth AuthInterceptor")
 	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
-	pr, ok := peer.FromContext(ctx)
 
-	fmt.Println("log pr: ", pr, "ok: ", ok)
 	if err != nil {
 		log.Println("get bearer: error")
 		return nil, err

@@ -8,8 +8,6 @@ package Echo
 
 import (
 	context "context"
-	"log"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -38,7 +36,6 @@ func NewEchoServiceClient(cc grpc.ClientConnInterface) EchoServiceClient {
 
 func (c *echoServiceClient) Echo(ctx context.Context, in *EchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
 	out := new(EchoResponse)
-	log.Println("+++++++")
 	err := c.cc.Invoke(ctx, "/Echo.EchoService/Echo", in, out, opts...)
 	if err != nil {
 		return nil, err
